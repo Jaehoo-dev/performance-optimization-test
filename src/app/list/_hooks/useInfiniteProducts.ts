@@ -22,3 +22,5 @@ export function useInfiniteProducts(options?: Options) {
     ...options,
   });
 }
+
+useInfiniteProducts.queryKey = ["products"];

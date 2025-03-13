@@ -1,5 +1,5 @@
 import { LoadingSpinner } from "@/components/LoadingSpinner";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import { useInfiniteProducts } from "../_hooks/useInfiniteProducts";
 import { MemoizedProductCard, ProductCard } from "./ProductCard";
@@ -53,7 +53,6 @@ export function ProductListWithMemoizedProductCards() {
 }
 
 export function VirtualizedProductList() {
-  const ref = useRef<HTMLDivElement>(null);
   const { data, fetchNextPage, isFetchingNextPage } = useInfiniteProducts();
   const products = data?.pages.flatMap((page) => page.products) ?? [];
 
@@ -78,7 +77,7 @@ export function VirtualizedProductList() {
   }, [fetchNextPage, isFetchingNextPage, products.length, virtualItems]);
 
   return (
-    <div ref={ref} className="w-full">
+    <div className="w-full">
       <div
         style={{
           height: `${virtualizer.getTotalSize()}px`,

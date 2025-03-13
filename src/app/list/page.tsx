@@ -9,6 +9,8 @@ import {
 } from "./_components/ProductList";
 import { match } from "ts-pattern";
 import { MAX_PAGES } from "./_constants";
+import { useQueryClient } from "@tanstack/react-query";
+import { useInfiniteProducts } from "./_hooks/useInfiniteProducts";
 
 const OPTIONS = {
   UNOPTIMIZED: "UNOPTIMIZED",
@@ -25,6 +27,7 @@ const labels: Record<Option, string> = {
 };
 
 export default function ListPage() {
+  const queryClient = useQueryClient();
   const [option, setOption] = useState<Option>("UNOPTIMIZED");
 
   return (
@@ -36,7 +39,12 @@ export default function ListPage() {
         <select
           className="border border-gray-300 rounded p-1"
           value={option}
-          onChange={(e) => setOption(e.target.value as Option)}
+          onChange={(e) => {
+            setOption(e.target.value as Option);
+            queryClient.removeQueries({
+              queryKey: useInfiniteProducts.queryKey,
+            });
+          }}
         >
           {Object.entries(OPTIONS).map(([key, value]) => (
             <option key={key} value={value}>
